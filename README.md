@@ -1,1 +1,1 @@
-# HackeEarth---Solutions-with-explanation
+# HackerEarth---Solutions-with-explanation
