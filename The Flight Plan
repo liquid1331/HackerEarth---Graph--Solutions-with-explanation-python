@@ -1,0 +1,58 @@
+Question link: hackerearth.com/practice/algorithms/graphs/breadth-first-search/practice-problems/algorithm/traffic-light-2-ee27ba45/
+
+
+Solution: This questions looks quite tricky but actually quite easy. If you make some graphs you will find that the shortest path doesn't
+doesn't depand on T, or C. It only depends on the shortest path between them. This is because if I move from one move to any next node I
+will require same amount of time Therefore it is wiser to choose the shortest path.
+
+below is the easyes implementation.
+
+from collections import defaultdict,deque #Importing libraries for hashmap and deque(queue can also be used as deque is not necessary)
+
+# Below function uses Breath First Search to solve the problem
+def breathFirstSearch(src):
+    visited[src]=0 # Marking the visited src fith value 0 as the distance form src to src will be zero
+    q=deque() # assigning deque
+    q.append(src) # first element in dequeue will be src 
+    while q:
+        s=q.popleft()
+        d[s].sort() # sorting as we want lexographically sorted
+        for i in d[s]:
+            if visited[i]==None:
+                d1[i].append(s) # for every node inserting its parent in the second dictionary's list
+                visited[i]=visited[s]+1 # updating visited[i] remember visited[i] is the distance from the parent +1
+                q.append(i)
+                
+n,m,t,c=map(int,input().split())# Taking input in 4 variables 
+d=defaultdict(list) # first hashmap(java) or dictionary(python) defaultdict with list inside make empty list whenever a new name is made
+d1=defaultdict(list) # second dictionary
+
+# taking input for edge u to v and also v to u since making undirected graph
+# making adjancancy list
+for _ in range(m):
+    x,y=map(int,input().split())
+    d[x].append(y)
+    d[y].append(x)
+    
+visited={} # To track the visited nodes it is a dictionary(python)
+# filling all the values of visited with None
+for i in range(1,n+1):
+    visited[i]=None
+
+# input for initial and final vertex
+x,y=map(int,input().split())
+
+breathFirstSearch(x) # Applying BFS
+
+ans=visited[y] # the value of the visited[final] is the number of nodes from src to final
+l=[]
+l.append(y) # as the final node will always in the answer
+src=y # making src as the final as because now we will back track or go from final to src
+
+for i in range(ans):
+    l.append(d1[src][0]) # Everty time appending the value of parent of node
+    src=l[-1] # apdating child with parent -1 indexing means last index
+    
+print(len(l)) # size of l is the shortest path
+
+print(*l[::-1]) # remember the answer is reverse of this list(array)
